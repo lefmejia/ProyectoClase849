@@ -1,23 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import CustomButton from './src/components/CustomButton';
+import CustomInput from './src/components/CustomInput';
+import { useState } from 'react';
+import RegisterScreen from './src/screens/RegisterScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import StackNavigator from './src/navigation/StackNavigator';
+import { navigationRef } from './src/navigation/NavigationService';
+import { AuthProvider } from './src/contexts/AuthContext';
+
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Mi primera app</Text>
-      <StatusBar style="auto" />
-      <CustomButton title={"App"} onPress={()=>{console.log('Boton 1 presionado')}}></CustomButton>
-      <CustomButton title={"Secondary button"} onPress={()=>{console.log('Boton 2 presionado')}}></CustomButton>
-    </View>
+  return(
+    <AuthProvider>
+      <NavigationContainer ref={navigationRef}>
+        <StackNavigator/>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#d29d9d',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
