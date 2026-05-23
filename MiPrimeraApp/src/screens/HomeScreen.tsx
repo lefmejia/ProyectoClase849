@@ -5,26 +5,30 @@ import CustomButton from "../components/CustomButton";
 import { useAuth } from "../contexts/AuthContext";
 import { TabsParamList } from "../navigation/TabsNavigator";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
 
-type Props = BottomTabScreenProps<TabsParamList, 'Home'>;
+type Props = CompositeScreenProps<
+    BottomTabScreenProps<TabsParamList, 'Home'>,
+    NativeStackScreenProps<RootStackParamList>
+>;
 
 export default function HomeScreen({route, navigation}: Props)
 {
-    // const {email} = route.params;
     const {user} = useAuth();
+
     const goToAddCustomer = () => {
-        navigation.navigate('Home');
+        navigation.navigate('AddCustomer');
     };
 
     const goToAddOrder = () => {
-        navigation.navigate('UserTabs');
+        navigation.navigate('AddOrder');
     };
 
     return (
         <View>
             <Text>Bienvenido {user?.email}, a Home</Text>
             <CustomButton title={"Crear cliente"} onPress={goToAddCustomer}/>
-            <CustomButton title={"Crear orden"} onPress={}/>
+            <CustomButton title={"Crear orden"} onPress={goToAddOrder}/>
         </View>
     );
 }
