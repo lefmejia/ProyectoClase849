@@ -4,35 +4,37 @@ import CustomButton from "../components/CustomButton";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-export default function LoginScreen ({navigation}:any)
-{
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+export default function LoginScreen({navigation}:any) {
+    const [email, setEmail] = useState('mjsalinas@unitec.edu');
+
     const {login} = useAuth();
 
     const handleLogin = () => {
         try{
             const allowed = login(email);
-            if(allowed)
-            {
-                navigation.navigate('Home', {email})
+            if (allowed) {
+                navigation.navigate('Home', {email});
+            }else{
+                console.log('no tiene acceso');
             }
-            else
-            {
-                console.log("no tiene acceso");
-            }
-        }catch(error){
+        }catch (error){
             console.log(error);
         }
-    };
+    }
 
-    return (
+    return(
         <View>
-            <CustomInput placeholder={'Ingresa tu correo'} value={email} onChange={setEmail}/>
+            <CustomInput placeholder={"Ingresa tu correo"} 
+            value={email} 
+            onChange={setEmail}/>
 
-            <CustomInput type={'password'} value={password} placeholder={'Ingresa tu contraseña'} onChange={setPassword}/>
-
-            <CustomButton title={"Ingresar"} onPress={handleLogin}/>
+            <CustomInput type={"password"} 
+            placeholder={"Ingresa tu contraseña"} 
+            value={email} 
+            onChange={setEmail}/>
+            
+            <CustomButton title={"Iniciar Sesion"} 
+            onPress={handleLogin}/>
         </View>
-    );
+    )
 }

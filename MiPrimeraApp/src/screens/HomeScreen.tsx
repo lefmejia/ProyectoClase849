@@ -1,30 +1,33 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
 import { RootStackParamList } from "../navigation/StackNavigator";
+import { StatusBar } from "expo-status-bar";
 import CustomButton from "../components/CustomButton";
 import { useAuth } from "../contexts/AuthContext";
-import { TabsParamList } from "../navigation/TabsNavigator";
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { i18n } from "../contexts/LanguageContext";
 
-type Props = BottomTabScreenProps<TabsParamList, 'Home'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-export default function HomeScreen({route, navigation}: Props)
-{
-    // const {email} = route.params;
+export default function HomeScreen({route, navigation}: Props){
+    //recepcion de email por medio de parametro de ruta
+    // const { email } = route.params;
+
+    //extraccion de usuario para email desde contexto
     const {user} = useAuth();
-    const goToAddCustomer = () => {
-        navigation.navigate('Home');
-    };
 
-    const goToAddOrder = () => {
+
+    const handleLoadSettings = () => {
         navigation.navigate('UserTabs');
-    };
-
-    return (
+    }
+    return(
         <View>
-            <Text>Bienvenido {user?.email}, a Home</Text>
-            <CustomButton title={"Crear cliente"} onPress={goToAddCustomer}/>
-            <CustomButton title={"Crear orden"} onPress={}/>
+            <StatusBar style="auto" />
+          <Text> Hola {user?.email}, {i18n.t('welcome')} </Text> 
+          <CustomButton title={i18n.t('goToSettings')} onPress={handleLoadSettings}/>
+          <CustomButton title={"Limpiar Idioma"} onPress={handleLoadSettings}/>
+          <Text>Current Language: {i18n.locale}</Text>
+          <CustomButton title={"EN"} onPress={() => changelan}/>
+          <CustomButton title={"ES"} onPress={handleLoadSettings}/>
         </View>
-    );
+    )
 }

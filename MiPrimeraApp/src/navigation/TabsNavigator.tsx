@@ -1,27 +1,45 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ProfileScreen from "../screens/UserSettings/ProfileScreen";
 import SettingsScreen from "../screens/UserSettings/SettingsScreen";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "./StackNavigator";
-import HomeScreen from "../screens/HomeScreen";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
+//1. declarar tipado para pantallas y sus parametros
+type TabsParamList = {
+  Profile: undefined;
+  Settings: undefined;
+};
 
-export type TabsParamList = {
-    Home: { email: string };
-    Profile: { email: string };
-    Settings: undefined;
-}
-
-type Props = NativeStackScreenProps<RootStackParamList, 'MainTabs'>;
-
+//2. crear el tabs navigator el cual se va a manejar la navegacion por pestañas
 const Tab = createBottomTabNavigator<TabsParamList>();
 
-export default function TabNavigator({route, navigation}: Props){
-    return(
-        <Tab.Navigator>
-            <Tab.Screen name="Home" component = {HomeScreen}/>
-            <Tab.Screen name="Profile" component = {ProfileScreen}/>
-            <Tab.Screen name="Settings" component = {SettingsScreen}/>
-        </Tab.Navigator>
-    );
+//3. utilizar el tab navigator
+export default function TabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: "#5f0650",
+      }}
+    >
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Mi Perfil",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          title: "Configuraciones",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
 }
