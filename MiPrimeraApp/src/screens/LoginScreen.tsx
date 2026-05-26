@@ -15,7 +15,7 @@ export default function LoginScreen ({navigation}:any)
             const allowed = login(email);
             if(allowed)
             {
-                navigation.navigate('Home', {email})
+                navigation.navigate('MainTabs', {email})
             }
             else
             {

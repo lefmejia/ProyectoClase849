@@ -11,6 +11,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddCustomer'>;
 export default function AddCustomerScreen({ route, navigation }: Props) {
     const { user } = useAuth();
 
+    const [nombre, setNombre] = useState('');
     const [pecho, setPecho] = useState('');
     const [cintura, setCintura] = useState('');
     const [cadera, setCadera] = useState('');
@@ -38,6 +39,14 @@ export default function AddCustomerScreen({ route, navigation }: Props) {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Agregar cliente</Text>
+
+            <Text style={styles.label}>Nombre del cliente</Text>
+            <CustomInput
+                type="text"
+                placeholder="Ingresar nombre del cliente"
+                value={nombre}
+                onChange={setNombre}
+            />
 
             <Text style={styles.label}>Pecho</Text>
             <CustomInput
