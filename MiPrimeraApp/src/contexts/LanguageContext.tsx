@@ -3,9 +3,7 @@ import { I18n } from "i18n-js";
 import { createContext, useContext, useEffect, useState } from "react";
 import { translations } from "../utils/translations";
 
-
-
-type Language = 'es' | 'en';
+type Language = 'es' | 'en' |'';
 
 type LanguageContextType = {
     language: Language;
@@ -13,56 +11,49 @@ type LanguageContextType = {
     clearLanguage: () => void;
 }
 
-//1. Definicion de diccionario en idiomas
-
-
-//2. Crear instancia de i18n con diccionario cargado
+//1. definicion de diccionario para idiomas en /utils
+//2. crear instancia de i18n con diccionario cargado
 const i18n = new I18n(translations);
 
-//3. Definir 
+//3. definir propiedades como idioma por defecto, habilitar fallback 
 i18n.defaultLocale = "en";
 i18n.enableFallback = true;
 
-
-const LanguageContext = createContext<LanguageContextType | null>(null);
-
+const LanguageContext = createContext<LanguageContextType| null>(null);
 
 export const useLanguage = () => {
     const context = useContext(LanguageContext);
-    if(!context) throw new Error ("useLanguage debe usarse dentro de LanguageProvider");
+    if (!context) throw new Error ("useLanguage debe usarse dentro de LanguageProvider");
     return context;
 }
 
+export const LanguageProvider = ({children}: {children: React.ReactNode}) => {
+    const [language, setLanguage] = useState<Language>("");
 
-export const LanguageProvider = ({children}:{children:React.ReactNode}) =>{
-    const [language, setLanguage] = useState<Language>("en");
-
-    useEffect(() => {
-        const loadLanguage = async () => {
+    useEffect(()=>{
+        const loadLanguage = async () =>{
             const storedLanguage = await AsyncStorage.getItem("language");
-            if(storedLanguage){
+            if (storedLanguage){
                 setLanguage(storedLanguage as Language);
                 i18n.locale = storedLanguage;
             }else {
                 i18n.locale = i18n.defaultLocale;
             }
         };
-
-        loadLanguage ();
+        loadLanguage();
     }, []);
 
-    const changeLanguage = async (lng: Language) =>{
+    const changeLanguage = async (lng: Language) => {
         setLanguage(lng);
-        i18n.locale = lng;
+        i18n.locale = lng; 
         await AsyncStorage.setItem("language", lng);
-    }
+    };
 
     const clearLanguage = async () => {
-        await AsyncStorage.removeItem("language");
-    }
-
+        await AsyncStorage.removeItem("language")
+    };
     return(
-        <LanguageContext.Provider value={{language, changeLanguage}}>
+        <LanguageContext.Provider value={{language, changeLanguage, clearLanguage}}>
             {children}
         </LanguageContext.Provider>
     );

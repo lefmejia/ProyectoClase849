@@ -1,85 +1,104 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View, StyleSheet, KeyboardTypeOptions} from "react-native";
+import { TextInput, TouchableOpacity, View, Text, StyleSheet, KeyboardTypeOptions } from "react-native";
+import { useTheme } from "../contexts/ThemeContext";
 
 type Props = {
     type?: "text" | "email" | "password" | "number";
-    placeholder?: string;
-    value?: string;
-    onChange: (text:string)=> void;
+    placeholder: string;
+    value: string;
+    onChange: (text: string) => void;
 }
 
-export default function CustomInput ({type, placeholder="", value="", onChange}:Props){
-    const [isSecureText, setIsSecureText] = useState(type ==='password');
-    const isPasswordField = type ==='password';
+export default function CustomInput ({type = "text", placeholder, value, onChange}: Props){
+    const {colors} = useTheme();
+    const [isSecureText, setIsSecureText] = useState(type === 'password');
+    const isPasswordField = type === 'password'; 
 
     const icon : typeof MaterialIcons["name"] | undefined = 
-        type === "email"? 'alternate-email' : type === "password" ? 'lock' : undefined
-
+        type === "email" ? 'alternate-email' : 
+            type === "password" ? 'lock' : undefined
     const keyboardType: KeyboardTypeOptions = 
         type === "email"? 'email-address' :
             type === "number" ? 'phone-pad':
                 'default';
-
+    
     const getError = () => {
-        if(type === 'email' && !value.includes('@')) return 'Correo invalido';
+        if (type === 'email' && !value.includes('@')) return 'Correo invalido';
         if (type === 'password' && value.length < 4) return 'La contraseña es muy debil';
         if (type === 'number' && (value.length != 8 || value.includes('-'))) return 'Numero de telefono invalido';
     }
-
     const error = getError();
 
-    return (
-        <View style={styles.wrapper}>
-        <View style={[styles.inputContainer, error && styles.inputError]}>
-            <MaterialIcons name={icon as any} size={22} color = "#000"/>
-            <TextInput
-                placeholder={placeholder}
-                value={value}
-                onChangeText={onChange}
-                style={styles.input}
-                secureTextEntry={isSecureText}
-                keyboardType={keyboardType}
-            />
-
-
-            { isPasswordField && <TouchableOpacity
-            
-            onPress={
-                ()=>{
-                    setIsSecureText(!isSecureText);
+    return(
+        //wrapper
+         <View style={styles.wrapper}>
+            <View style={[
+                styles.inputContainer,
+                {
+                    backgroundColor: colors.inputBackground,
+                    borderColor: error ? colors.error : colors.border
                 }
+            ]}>
+                <MaterialIcons name={icon as any} size={22} color={colors.textSecondary}/>
+                <TextInput 
+                    placeholder={placeholder}
+                    placeholderTextColor={colors.textSecondary}
+                    value={value}
+                    onChangeText={onChange}
+                    style={[styles.input, {color: colors.text}]}
+                    secureTextEntry={isSecureText}
+                    keyboardType={keyboardType}
+                />
+              { isPasswordField && <TouchableOpacity
+                onPress={
+                    ()=>{
+                        setIsSecureText(!isSecureText)
+                    }
+                }
+                >
+                    <Ionicons 
+                        name={isSecureText ? "eye" : "eye-off"} 
+                        size={22}
+                        color={colors.textSecondary} />
+                </TouchableOpacity>}
+            </View>
+            {
+            error && 
+                <Text style ={[styles.inputError, {color: colors.error}]} > {error} </Text>
             }
-            >
-                <Ionicons name={isSecureText? "eye" : "eye-off"} size={15}/>
-            </TouchableOpacity> }
-        </View>
-        {error && <Text style={styles.inputError}>{error}</Text>}
-        </View>
+         </View>
+
     );
 }
 
+
 const styles = StyleSheet.create({
-    wrapper:{
-        marginBottom:10
+    wrapper: {
+        marginBottom: 10,
     },
-    inputContainer:{
+    inputContainer: {
+        //distribucion de componentes
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 15,
-        borderColor:'#000',
+        marginTop: 10,
+
+        //estilizacion de input
+        borderColor: 'gray',
         borderWidth: 1,
-        borderRadius:9,
-        backgroundColor:'#f0f0f0',
-        marginTop: 10
+        borderRadius: 9,
+        backgroundColor: "#f0f0f0",
+        paddingLeft: 20,
+
     },
-    input:{
+    input: {
         width: '80%',
-        paddingHorizontal: 10,
         paddingVertical: 10,
+        paddingHorizontal: 10,
+      
     },
-    inputError : {
+    inputError :{
         color:'red',
-        borderColor:'red'
+        borderColor: 'red',
     }
-});
+})
