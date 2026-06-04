@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginScreen ({navigation}:any)
 {
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("lefmejia@unitec.edu");
     const [password, setPassword] = useState("");
     const {login} = useAuth();
 
