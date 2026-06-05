@@ -6,11 +6,14 @@ import CustomInput from "../components/CustomInput";
 import Tooltip from "../components/Tooltip";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
+import { useAppDispatch } from "../store/hooks";
+import { addCustomer } from "../store/slices/customerProfileSlice";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddCustomer'>;
 
 export default function AddCustomerScreen({ route, navigation }: Props) {
     const { user } = useAuth();
+    const dispatch = useAppDispatch();
 
     const [nombre, setNombre] = useState('');
     const [pecho, setPecho] = useState('');
@@ -34,7 +37,30 @@ export default function AddCustomerScreen({ route, navigation }: Props) {
     const [muslo, setMuslo] = useState('');
 
     const handleSave = () => {
-        // TODO: save customer
+        dispatch(addCustomer({
+            id: Date.now().toString(),
+            nombre,
+            pecho,
+            cintura,
+            cadera,
+            hombro,
+            largoManga,
+            cuello,
+            altura,
+            talleEspalda,
+            talleFrente,
+            altoBusto,
+            largoBlusa,
+            contornoBrazo,
+            contornoPuno,
+            separacionBusto,
+            contornoTorax,
+            contornoMedioTalle,
+            entrepierna,
+            tiro,
+            muslo,
+        }));
+        navigation.goBack();
     };
 
     return (

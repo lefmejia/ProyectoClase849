@@ -1,0 +1,23 @@
+export type CustomerProfile = {
+    id: string;
+    nombre: string;
+    pecho: string;
+    cintura: string;
+    cadera: string;
+    hombro: string;
+    largoManga: string;
+    cuello: string;
+    altura: string;
+    talleEspalda: string;
+    talleFrente: string;
+    altoBusto: string;
+    largoBlusa: string;
+    contornoBrazo: string;
+    contornoPuno: string;
+    separacionBusto?: string;
+    contornoTorax?: string;
+    contornoMedioTalle?: string;
+    entrepierna: string;
+    tiro: string;
+    muslo: string;
+};
