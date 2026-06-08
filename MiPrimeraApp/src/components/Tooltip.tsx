@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native';
+import { useTheme } from '../contexts/ThemeContext';
+import { ThemeColors } from '../utils/types/ThemeColors';
 
 type Props = {
     text: string;
 };
 
 export default function Tooltip({ text }: Props) {
+    const { colors } = useTheme();
+    const styles = getStyles(colors);
     const [visible, setVisible] = useState(false);
 
     return (
@@ -25,12 +29,12 @@ export default function Tooltip({ text }: Props) {
     );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (colors: ThemeColors) => StyleSheet.create({
     icon: {
         width: 18,
         height: 18,
         borderWidth: 1,
-        borderColor: 'navy',
+        borderColor: colors.primary,
         borderRadius: 3,
         alignItems: 'center',
         justifyContent: 'center',
@@ -40,7 +44,7 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontWeight: 'bold',
         fontStyle: 'italic',
-        color: 'navy',
+        color: colors.primary,
     },
     overlay: {
         flex: 1,
@@ -50,15 +54,15 @@ const styles = StyleSheet.create({
         padding: 32,
     },
     bubble: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.background,
         borderWidth: 1.5,
-        borderColor: 'navy',
+        borderColor: colors.primary,
         borderRadius: 10,
         padding: 16,
     },
     bubbleText: {
         fontSize: 14,
-        color: '#000',
+        color: colors.primary,
         lineHeight: 21,
     },
 });

@@ -3,16 +3,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
 import { useState } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function RegisterScreen ()
 {
     const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const { colors } = useTheme();
 
   return (
-    <View style={styles.container}>
-      <Text>Mi primera app</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={{ color: colors.text }}>Mi primera app</Text>
       <StatusBar style="auto" />
       <CustomInput 
       type={'email'}
@@ -48,7 +50,6 @@ export default function RegisterScreen ()
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d29d9d',
     alignItems: 'center',
     justifyContent: 'center',
   },

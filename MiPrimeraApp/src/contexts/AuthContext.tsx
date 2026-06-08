@@ -26,7 +26,7 @@ export const AuthProvider = ({children}:{children:React.ReactNode}) => {
     const [user, setUser] = useState<User>(null);
 
     const login = (email:string):boolean => {
-        const allowed = email.endsWith('.edu');
+        const allowed = email.includes("@");
         if(allowed)
         {
             setUser({email});

@@ -1,14 +1,16 @@
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function LoginScreen ({navigation}:any)
 {
     const [email, setEmail] = useState("lefmejia@unitec.edu");
     const [password, setPassword] = useState("");
     const {login} = useAuth();
+    const { colors } = useTheme();
 
     const handleLogin = () => {
         try{
@@ -27,7 +29,7 @@ export default function LoginScreen ({navigation}:any)
     };
 
     return (
-        <View>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
             <CustomInput placeholder={'Ingresa tu correo'} value={email} onChange={setEmail}/>
 
             <CustomInput type={'password'} value={password} placeholder={'Ingresa tu contraseña'} onChange={setPassword}/>
@@ -36,3 +38,11 @@ export default function LoginScreen ({navigation}:any)
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+        justifyContent: 'center',
+    },
+});

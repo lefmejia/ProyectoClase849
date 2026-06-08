@@ -1,8 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import CustomButton from "../../components/CustomButton";
 import { navigationRef } from "../../navigation/NavigationService";
+import { useTheme } from "../../contexts/ThemeContext";
 
 export default function ProfileScreen({navigation}:any){
+    const { colors } = useTheme();
     const handleLogout = () => {
        if(navigationRef.isReady()){
             navigationRef.reset({
@@ -19,10 +21,15 @@ export default function ProfileScreen({navigation}:any){
         navigation.navigate('Login');
     }
     return(
-        <View>
-            <Text> Bienvenido a Profile</Text>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
             <CustomButton title={"Cerrar Sesion"} onPress={handleLogout}/>
-            <CustomButton title={"Ir a Login"} onPress={handleGoToLogin}/>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+    },
+});

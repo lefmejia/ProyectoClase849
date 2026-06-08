@@ -8,15 +8,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
 import { navigationRef } from './src/navigation/NavigationService';
 import { AuthProvider } from './src/contexts/AuthContext';
+import { ThemeProvider } from './src/contexts/ThemeContext';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
 
 
 export default function App() {
   return(
-    <AuthProvider>
-      <NavigationContainer ref={navigationRef}>
-        <StackNavigator/>
-      </NavigationContainer>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Provider store={store}>
+          <NavigationContainer ref={navigationRef}>
+            <StackNavigator/>
+          </NavigationContainer>
+        </Provider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
