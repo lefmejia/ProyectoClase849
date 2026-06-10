@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import { useState } from "react";
@@ -30,6 +30,9 @@ export default function LoginScreen ({navigation}:any)
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View>
+                <Text>{process.env.EXPO_PUBLIC_MI_VARIABLE}</Text>
+            </View>
             <CustomInput placeholder={'Ingresa tu correo'} value={email} onChange={setEmail}/>
 
             <CustomInput type={'password'} value={password} placeholder={'Ingresa tu contraseña'} onChange={setPassword}/>
