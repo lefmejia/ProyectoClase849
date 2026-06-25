@@ -1,5 +1,6 @@
 export type CustomerProfile = {
-    id: string;
+    id?:number;
+    userid:string;
     nombre: string;
     pecho: string;
     cintura: string;

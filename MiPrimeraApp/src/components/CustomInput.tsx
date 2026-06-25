@@ -13,7 +13,7 @@ type Props = {
 }
 
 const parseDate = (text: string): Date => {
-    const [day, month, year] = text.split('/').map(Number);
+    const [year, month, day] = text.split('-').map(Number);
     if (day && month && year) return new Date(year, month - 1, day);
     return new Date();
 }
@@ -21,7 +21,7 @@ const parseDate = (text: string): Date => {
 const formatDate = (date: Date): string => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
-    return `${day}/${month}/${date.getFullYear()}`;
+    return `${date.getFullYear()}-${month}-${day}`;
 }
 
 export default function CustomInput ({type, placeholder="", value="", onChange}:Props){
@@ -29,6 +29,7 @@ export default function CustomInput ({type, placeholder="", value="", onChange}:
     const styles = getStyles(colors);
     const [isSecureText, setIsSecureText] = useState(type ==='password');
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [isTouched, setIsTouched] = useState(false);
     const isPasswordField = type ==='password';
     const isCalendarField = type === 'calendar';
 
@@ -47,7 +48,12 @@ export default function CustomInput ({type, placeholder="", value="", onChange}:
         if (type === 'number' && (value.length != 8 || value.includes('-'))) return 'Numero de telefono invalido';
     }
 
-    const error = getError();
+    const error = isTouched ? getError() : undefined;
+
+    const handleChangeText = (text: string) => {
+        setIsTouched(true);
+        onChange(text);
+    }
 
     const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
         setShowDatePicker(false);
@@ -71,7 +77,7 @@ export default function CustomInput ({type, placeholder="", value="", onChange}:
                     placeholder={placeholder}
                     placeholderTextColor={colors.textSecondary}
                     value={value}
-                    onChangeText={onChange}
+                    onChangeText={handleChangeText}
                     style={styles.input}
                     secureTextEntry={isSecureText}
                     keyboardType={keyboardType}

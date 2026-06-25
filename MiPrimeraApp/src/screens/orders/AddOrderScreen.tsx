@@ -1,12 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from "expo-image-picker";
 import { RootStackParamList } from "../../navigation/StackNavigator";
 import CustomButton from "../../components/CustomButton";
 import CustomInput from "../../components/CustomInput";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { addOrder } from "../../store/slices/orderSlice";
+import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { ThemeColors } from "../../utils/types/ThemeColors";
 
@@ -14,26 +16,48 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddOrder'>;
 
 export default function AddOrderScreen({ navigation }: Props) {
     const dispatch = useAppDispatch();
+    const { user } = useAuth();
     const customers = useAppSelector(state => state.customers.customers);
     const { colors } = useTheme();
     const styles = getStyles(colors);
 
-    const [selectedCustomerId, setSelectedCustomerId] = useState('');
+    const [selectedCustomerId, setSelectedCustomerId] = useState(0);
     const [tipoRopa, setTipoRopa] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [precio, setPrecio] = useState('');
     const [fechaEntrega, setFechaEntrega] = useState('');
+    const [imageUri, setImageUri] = useState<string | undefined>(undefined);
+
+    const pickImage = async () => {
+        const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (!permission.granted) return;
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            quality: 0.7,
+        });
+
+        if (!result.canceled) {
+            setImageUri(result.assets[0].uri);
+        }
+    };
 
     const handleSave = () => {
+        if (!selectedCustomerId || !tipoRopa.trim() || !descripcion.trim() || !precio.trim() || !fechaEntrega.trim()) {
+            Alert.alert("Campos requeridos", "Completa todos los campos antes de continuar.");
+            return;
+        }
+
         dispatch(addOrder({
-            id: Date.now().toString(),
             customerId: selectedCustomerId,
+            userid: user?.userid!,
             tipoRopa,
             descripcion,
             precio,
             fechaEntrega,
             fechaCreacion: new Date().toISOString(),
             estado: 'pendiente',
+            imageUri,
         }));
         navigation.goBack();
     };
@@ -69,6 +93,12 @@ export default function AddOrderScreen({ navigation }: Props) {
             <Text style={styles.label}>Fecha de entrega</Text>
             <CustomInput type="calendar" placeholder="Seleccione una fecha" value={fechaEntrega} onChange={setFechaEntrega} />
 
+            <Text style={styles.label}>Imagen (opcional)</Text>
+            {imageUri && (
+                <Image source={{ uri: imageUri }} style={styles.preview} />
+            )}
+            <CustomButton title={imageUri ? "Cambiar imagen" : "Seleccionar imagen"} onPress={pickImage} />
+
             <CustomButton title="Agregar orden" onPress={handleSave} />
         </ScrollView>
     );
@@ -96,6 +126,13 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
         borderColor: colors.border,
         borderRadius: 9,
         backgroundColor: colors.inputBackground,
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    preview: {
+        width: '100%',
+        height: 200,
+        borderRadius: 9,
         marginTop: 10,
         marginBottom: 10,
     },

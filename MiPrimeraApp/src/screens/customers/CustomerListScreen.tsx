@@ -23,12 +23,11 @@ export default function CustomerListScreen({ navigation }: Props) {
             <Text style={styles.title}>Clientes</Text>
             <FlatList
                 data={customers}
-                keyExtractor={(item) => item.id}
                 ListEmptyComponent={<Text style={styles.emptyText}>No hay clientes</Text>}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.item}
-                        onPress={() => navigation.navigate('CustomerDetail', { customerId: item.id })}
+                        onPress={() => navigation.navigate('CustomerDetail', { customerId: item.id! })}
                     >
                         <Text style={styles.itemText}>{item.nombre}</Text>
                     </TouchableOpacity>

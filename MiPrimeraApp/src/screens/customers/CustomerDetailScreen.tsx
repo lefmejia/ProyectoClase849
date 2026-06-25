@@ -51,6 +51,7 @@ export default function CustomerDetailScreen({ route, navigation }: Props) {
     const handleSave = () => {
         dispatch(updateCustomer({
             id: customerId,
+            userid: customer.userid,
             nombre,
             pecho,
             cintura,

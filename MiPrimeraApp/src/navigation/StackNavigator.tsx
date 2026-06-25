@@ -7,15 +7,17 @@ import AddCustomerScreen from "../screens/customers/AddCustomerScreen";
 import AddOrderScreen from "../screens/orders/AddOrderScreen";
 import OrderDetailScreen from "../screens/orders/OrderDetailScreen";
 import CustomerDetailScreen from "../screens/customers/CustomerDetailScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 
 
 export type RootStackParamList = {
     Login: undefined,
+    Register: undefined,
     MainTabs: {email: string},
     AddCustomer: undefined,
     AddOrder: undefined,
-    OrderDetail: {orderId: string},
-    CustomerDetail: {customerId: string}
+    OrderDetail: {orderId: number},
+    CustomerDetail: {customerId: number}
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -28,21 +30,18 @@ export default function StackNavigator()
         <Stack.Navigator
             initialRouteName="Login"
             screenOptions={{
-                headerShown: true,
                 headerStyle: { backgroundColor: colors.headerBackground },
-                headerTintColor: colors.headerText,
                 contentStyle: { backgroundColor: colors.background },
             }}
         >
             <Stack.Screen name="Login" component={LoginScreen}/>
+            <Stack.Screen name="Register" component={RegisterScreen}/>
             <Stack.Screen name='MainTabs' component={TabsNavigator} />
             <Stack.Screen 
                 name='AddCustomer' 
                 component={AddCustomerScreen} 
                 options={{
-                    headerShown: true,
                     headerStyle: { backgroundColor: colors.headerBackground },
-                    headerTintColor: colors.headerText,
                     contentStyle: { backgroundColor: colors.background },
                     headerBackButtonDisplayMode: "minimal"
                 }}
@@ -51,9 +50,7 @@ export default function StackNavigator()
                 name='AddOrder' 
                 component={AddOrderScreen} 
                 options={{
-                    headerShown: true,
                     headerStyle: { backgroundColor: colors.headerBackground },
-                    headerTintColor: colors.headerText,
                     contentStyle: { backgroundColor: colors.background },
                 }}
                 />
@@ -61,9 +58,7 @@ export default function StackNavigator()
                 name='OrderDetail' 
                 component={OrderDetailScreen} 
                 options={{
-                    headerShown: true,
                     headerStyle: { backgroundColor: colors.headerBackground },
-                    headerTintColor: colors.headerText,
                     contentStyle: { backgroundColor: colors.background },
                 }}
                 />
@@ -71,9 +66,7 @@ export default function StackNavigator()
                 name='CustomerDetail' 
                 component={CustomerDetailScreen}
                 options={{
-                    headerShown: true,
                     headerStyle: { backgroundColor: colors.headerBackground },
-                    headerTintColor: colors.headerText,
                     contentStyle: { backgroundColor: colors.background },
                 }}
                  />

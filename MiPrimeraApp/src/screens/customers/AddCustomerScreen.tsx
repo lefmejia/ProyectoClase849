@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Alert } from "react-native";
 import { RootStackParamList } from "../../navigation/StackNavigator";
 import CustomButton from "../../components/CustomButton";
 import CustomInput from "../../components/CustomInput";
@@ -41,8 +41,13 @@ export default function AddCustomerScreen({ route, navigation }: Props) {
     const [muslo, setMuslo] = useState('');
 
     const handleSave = () => {
+        if (!nombre.trim()) {
+            Alert.alert("Campos requeridos", "Ingresa el nombre del cliente.");
+            return;
+        }
+
         dispatch(addCustomer({
-            id: Date.now().toString(),
+            userid: user?.userid!,
             nombre,
             pecho,
             cintura,

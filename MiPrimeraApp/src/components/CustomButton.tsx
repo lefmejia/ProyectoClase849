@@ -25,7 +25,8 @@ const getStyles = (variant: "primary" | "secondary" | "tertiary", colors: ThemeC
         backgroundColor: variant === "primary"? colors.buttonPrimaryBg : variant === "secondary"? colors.buttonSecondaryBg : colors.buttonTertiaryBg,
         padding:12,
         width:150,
-        margin: 10
+        margin: 10,
+        alignItems:"center"
     },
     buttonText:{
         color: variant === "primary"? colors.buttonPrimaryText : variant === "secondary"? colors.buttonSecondaryText : colors.buttonTertiaryText,

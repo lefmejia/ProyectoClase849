@@ -10,6 +10,9 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import OrderCard from "../components/OrderCard";
 import { useTheme } from "../contexts/ThemeContext";
 import { ThemeColors } from "../utils/types/ThemeColors";
+import { useEffect } from "react";
+import { fetchCustomers } from "../store/slices/customerProfileSlice";
+import { fetchOrders } from "../store/slices/orderSlice";
 
 type Props = CompositeScreenProps<
     BottomTabScreenProps<TabsParamList, 'Home'>,
@@ -28,6 +31,11 @@ export default function HomeScreen({route, navigation}: Props)
     const inProgressOrders = orders.filter((o) => o.estado === "en progreso");
     const customers = useAppSelector((state) => state.customers.customers);
 
+    useEffect(() => {
+        dispatch(fetchCustomers());
+        dispatch(fetchOrders());
+    }, [dispatch]);
+
     const goToAddCustomer = () => {
         navigation.navigate('AddCustomer');
     };
@@ -36,7 +44,7 @@ export default function HomeScreen({route, navigation}: Props)
         navigation.navigate('AddOrder');
     };
 
-    const getCustomerName = (customerId: string):string => {
+    const getCustomerName = (customerId: number):string => {
         const index = customers.findIndex((c) => c.id === customerId);
         if(index !== -1){
             return customers[index].nombre;
@@ -62,7 +70,7 @@ export default function HomeScreen({route, navigation}: Props)
                             tipoRopa={order.tipoRopa}
                             fechaEntrega={order.fechaEntrega}
                             estado={order.estado}
-                            onPress={() => navigation.navigate('OrderDetail', { orderId: order.id })}/>
+                            onPress={() => navigation.navigate('OrderDetail', { orderId: order.id! })}/>
                     ))
                 )}
             </View>
@@ -78,7 +86,7 @@ export default function HomeScreen({route, navigation}: Props)
                             tipoRopa={order.tipoRopa}
                             fechaEntrega={order.fechaEntrega}
                             estado={order.estado}
-                            onPress={() => navigation.navigate('OrderDetail', { orderId: order.id })}/>
+                            onPress={() => navigation.navigate('OrderDetail', { orderId: order.id! })}/>
                     ))
                 )}
             </View>
@@ -94,7 +102,7 @@ export default function HomeScreen({route, navigation}: Props)
                             tipoRopa={order.tipoRopa}
                             fechaEntrega={order.fechaEntrega}
                             estado={order.estado}
-                            onPress={() => navigation.navigate('OrderDetail', { orderId: order.id })}/>
+                            onPress={() => navigation.navigate('OrderDetail', { orderId: order.id! })}/>
                     ))
                 )}
             </View>
